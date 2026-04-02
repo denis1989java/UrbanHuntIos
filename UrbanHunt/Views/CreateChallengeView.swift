@@ -446,9 +446,14 @@ struct CreateChallengeView: View {
                 print("❌ Error creating challenge: \(apiError)")
                 await MainActor.run {
                     // Check if it's a profanity error
-                    if case .serverError(let message) = apiError,
-                       message.contains("Inappropriate content") {
-                        errorMessage = "inappropriate_content".localized
+                    if case .serverError(let message) = apiError {
+                        if message.contains("Inappropriate content") {
+                            errorMessage = "inappropriate_content".localized
+                        } else if message.contains("must have either") {
+                            errorMessage = "hint_requires_content".localized
+                        } else {
+                            errorMessage = message
+                        }
                     } else {
                         errorMessage = apiError.localizedDescription
                     }
@@ -771,7 +776,9 @@ struct AddHintSheet: View {
     }
 
     private var canAdd: Bool {
-        !content.trimmingCharacters(in: .whitespaces).isEmpty
+        let hasContent = !content.trimmingCharacters(in: .whitespaces).isEmpty
+        let hasImage = selectedImage != nil
+        return hasContent || hasImage
     }
 
     private func formatDate(_ date: Date) -> String {
@@ -1020,7 +1027,9 @@ struct EditHintSheet: View {
     }
 
     private var canSave: Bool {
-        !content.trimmingCharacters(in: .whitespaces).isEmpty
+        let hasContent = !content.trimmingCharacters(in: .whitespaces).isEmpty
+        let hasImage = selectedImage != nil
+        return hasContent || hasImage
     }
 
     private func formatDate(_ date: Date) -> String {

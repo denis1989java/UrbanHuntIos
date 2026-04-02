@@ -62,6 +62,7 @@
 
 /* Errors */
 "inappropriate_content" = "Se detectó contenido inapropiado. Por favor elimine el lenguaje ofensivo.";
+"hint_requires_content" = "La pista debe tener texto o una foto";
 
 /* Version Update */
 "update_required" = "Actualización Requerida";
