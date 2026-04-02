@@ -1,0 +1,41 @@
+# Xcode
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+*.xcworkspace/*
+!*.xcworkspace/contents.xcworkspacedata
+!*.xcworkspace/xcshareddata/
+
+# User settings
+xcuserdata/
+*.xcuserstate
+*.xcuserdatad
+
+# Build products
+build/
+DerivedData/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# CocoaPods
+Pods/
+*.podspec
+Podfile.lock
+
+# Swift Package Manager
+.swiftpm/
+*.xcworkspace/xcshareddata/swiftpm/
+
+# macOS
+.DS_Store
+
+# Firebase
+GoogleService-Info.plist
+*-key.json
+*.json.key
+
+# Other
+*.moved-aside
+*.swp
+*~.nib

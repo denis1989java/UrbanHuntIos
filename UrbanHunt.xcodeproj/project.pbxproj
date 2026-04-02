@@ -6,14 +6,35 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4FE658772F7C68E400E13AB4 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 4FE658762F7C68E400E13AB4 /* GoogleSignIn */; };
+		4FE658792F7C68E400E13AB4 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4FE658782F7C68E400E13AB4 /* GoogleSignInSwift */; };
+		4FE6587C2F7C6A2A00E13AB4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 4FE6587B2F7C6A2A00E13AB4 /* FirebaseAuth */; };
+		4FE6587E2F7C6A3100E13AB4 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4FE6587D2F7C6A3100E13AB4 /* FirebaseCore */; };
+		4FE6588D2F7C82D000E13AB4 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 4FE6588C2F7C82D000E13AB4 /* FirebaseStorage */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
-		4FE658422F7C04FA00E13AB4 /* UrabnHunt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UrabnHunt.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4FE658422F7C04FA00E13AB4 /* UrbanHunt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UrbanHunt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4FE658802F7C6C1200E13AB4 /* Exceptions for "UrbanHunt" folder in "UrbanHunt" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 4FE658412F7C04FA00E13AB4 /* UrbanHunt */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		4FE658442F7C04FA00E13AB4 /* UrabnHunt */ = {
+		4FE658442F7C04FA00E13AB4 /* UrbanHunt */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = UrabnHunt;
+			exceptions = (
+				4FE658802F7C6C1200E13AB4 /* Exceptions for "UrbanHunt" folder in "UrbanHunt" target */,
+			);
+			path = UrbanHunt;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -23,6 +44,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FE658772F7C68E400E13AB4 /* GoogleSignIn in Frameworks */,
+				4FE6587C2F7C6A2A00E13AB4 /* FirebaseAuth in Frameworks */,
+				4FE6587E2F7C6A3100E13AB4 /* FirebaseCore in Frameworks */,
+				4FE6588D2F7C82D000E13AB4 /* FirebaseStorage in Frameworks */,
+				4FE658792F7C68E400E13AB4 /* GoogleSignInSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -32,7 +58,8 @@
 		4FE658392F7C04FA00E13AB4 = {
 			isa = PBXGroup;
 			children = (
-				4FE658442F7C04FA00E13AB4 /* UrabnHunt */,
+				4FE658442F7C04FA00E13AB4 /* UrbanHunt */,
+				4FE6587A2F7C6A2A00E13AB4 /* Frameworks */,
 				4FE658432F7C04FA00E13AB4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -40,17 +67,24 @@
 		4FE658432F7C04FA00E13AB4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4FE658422F7C04FA00E13AB4 /* UrabnHunt.app */,
+				4FE658422F7C04FA00E13AB4 /* UrbanHunt.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		4FE6587A2F7C6A2A00E13AB4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4FE658412F7C04FA00E13AB4 /* UrabnHunt */ = {
+		4FE658412F7C04FA00E13AB4 /* UrbanHunt */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4FE6584D2F7C04FD00E13AB4 /* Build configuration list for PBXNativeTarget "UrabnHunt" */;
+			buildConfigurationList = 4FE6584D2F7C04FD00E13AB4 /* Build configuration list for PBXNativeTarget "UrbanHunt" */;
 			buildPhases = (
 				4FE6583E2F7C04FA00E13AB4 /* Sources */,
 				4FE6583F2F7C04FA00E13AB4 /* Frameworks */,
@@ -61,13 +95,18 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				4FE658442F7C04FA00E13AB4 /* UrabnHunt */,
+				4FE658442F7C04FA00E13AB4 /* UrbanHunt */,
 			);
-			name = UrabnHunt;
+			name = UrbanHunt;
 			packageProductDependencies = (
+				4FE658762F7C68E400E13AB4 /* GoogleSignIn */,
+				4FE658782F7C68E400E13AB4 /* GoogleSignInSwift */,
+				4FE6587B2F7C6A2A00E13AB4 /* FirebaseAuth */,
+				4FE6587D2F7C6A3100E13AB4 /* FirebaseCore */,
+				4FE6588C2F7C82D000E13AB4 /* FirebaseStorage */,
 			);
-			productName = UrabnHunt;
-			productReference = 4FE658422F7C04FA00E13AB4 /* UrabnHunt.app */;
+			productName = UrbanHunt;
+			productReference = 4FE658422F7C04FA00E13AB4 /* UrbanHunt.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -85,21 +124,25 @@
 					};
 				};
 			};
-			buildConfigurationList = 4FE6583D2F7C04FA00E13AB4 /* Build configuration list for PBXProject "UrabnHunt" */;
+			buildConfigurationList = 4FE6583D2F7C04FA00E13AB4 /* Build configuration list for PBXProject "UrbanHunt" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				Base,
+				es,
 			);
 			mainGroup = 4FE658392F7C04FA00E13AB4;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				4FE658742F7C689600E13AB4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				4FE658752F7C68E400E13AB4 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4FE658432F7C04FA00E13AB4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4FE658412F7C04FA00E13AB4 /* UrabnHunt */,
+				4FE658412F7C04FA00E13AB4 /* UrbanHunt */,
 			);
 		};
 /* End PBXProject section */
@@ -246,14 +289,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 299D24442M;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = UrbanHunt/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -269,8 +313,9 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 26.4;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.app.UrabnHunt;
+				PRODUCT_BUNDLE_IDENTIFIER = com.app.UrbanHunt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -290,14 +335,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 299D24442M;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = UrbanHunt/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -313,8 +359,9 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 26.4;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.app.UrabnHunt;
+				PRODUCT_BUNDLE_IDENTIFIER = com.app.UrbanHunt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -332,7 +379,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4FE6583D2F7C04FA00E13AB4 /* Build configuration list for PBXProject "UrabnHunt" */ = {
+		4FE6583D2F7C04FA00E13AB4 /* Build configuration list for PBXProject "UrbanHunt" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4FE6584B2F7C04FD00E13AB4 /* Debug */,
@@ -341,7 +388,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4FE6584D2F7C04FD00E13AB4 /* Build configuration list for PBXNativeTarget "UrabnHunt" */ = {
+		4FE6584D2F7C04FD00E13AB4 /* Build configuration list for PBXNativeTarget "UrbanHunt" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4FE6584E2F7C04FD00E13AB4 /* Debug */,
@@ -351,6 +398,53 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4FE658742F7C689600E13AB4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.11.0;
+			};
+		};
+		4FE658752F7C68E400E13AB4 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4FE658762F7C68E400E13AB4 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FE658752F7C68E400E13AB4 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		4FE658782F7C68E400E13AB4 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FE658752F7C68E400E13AB4 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		4FE6587B2F7C6A2A00E13AB4 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FE658742F7C689600E13AB4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		4FE6587D2F7C6A3100E13AB4 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FE658742F7C689600E13AB4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		4FE6588C2F7C82D000E13AB4 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4FE658742F7C689600E13AB4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4FE6583A2F7C04FA00E13AB4 /* Project object */;
 }

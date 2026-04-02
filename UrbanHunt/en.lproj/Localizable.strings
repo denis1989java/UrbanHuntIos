@@ -1,0 +1,88 @@
+/* Authentication */
+"sign_in_with_google" = "Sign in with Google";
+"welcome_urban_hunt" = "Discover hidden challenges in your city";
+
+/* Profile */
+"profile" = "Profile";
+"edit_profile" = "Edit Profile";
+"name" = "Name";
+"enter_your_name" = "Enter your name";
+"social_media" = "Social Media";
+"social_media_link" = "Social Media Link (optional)";
+"instagram_or_tiktok_url" = "Instagram or TikTok URL";
+"save" = "Save";
+"cancel" = "Cancel";
+"settings" = "Settings";
+"sign_out" = "Sign Out";
+
+/* Create Challenge */
+"create_challenge" = "Create Challenge";
+"country" = "Country";
+"city" = "City";
+"select_country" = "Select country";
+"select_city" = "Select city";
+"challenge_name" = "Challenge name";
+"enter_challenge_title" = "Enter challenge title";
+
+/* Hints */
+"hints" = "Hints";
+"add_hint" = "Add hint";
+"no_hints_added" = "No hints added yet";
+"hint_text" = "Hint text";
+"enter_hint" = "Enter hint";
+"media_optional" = "Media (optional)";
+"select_photo_or_video" = "Select photo or video";
+"photo_selected" = "Photo selected";
+"tap_to_change" = "Tap to change";
+"publish_immediately" = "Publish immediately";
+"publish_date" = "Publish date";
+"select_date" = "Select Date";
+"select_date_and_time" = "Select date and time";
+"done" = "Done";
+"add" = "Add";
+"edit_hint" = "Edit Hint";
+"delete_hint" = "Delete Hint";
+"delete" = "Delete";
+
+/* Prize Photo */
+"prize_photo" = "Prize Photo (optional)";
+"select_prize_photo" = "Select prize photo";
+
+/* Home */
+"home" = "Home";
+"challenges" = "Challenges";
+/* Settings */
+"language" = "Language";
+"theme" = "Theme";
+"theme_system" = "System";
+"theme_light" = "Light";
+"theme_dark" = "Dark";
+"ok" = "OK";
+"failed_to_load_locales" = "Failed to load languages";
+
+/* Errors */
+"inappropriate_content" = "Inappropriate content detected. Please remove offensive language.";
+
+/* Version Update */
+"update_required" = "Update Required";
+"please_update_app" = "Please update the app from the App Store to continue";
+"latest_version" = "Latest version";
+"update_now" = "Update Now";
+
+/* Filters */
+"all_countries" = "All Countries";
+"all_cities" = "All Cities";
+"filter_by_country" = "Filter by Country";
+"filter_by_city" = "Filter by City";
+
+/* Comments */
+"comments" = "Comments";
+"no_comments_yet" = "No comments yet";
+"add_comment" = "Add a comment...";
+
+/* Status */
+"status_active" = "Active";
+"status_completed" = "Completed";
+"status_archived" = "Archived";
+"unknown_user" = "Unknown";
+"no_challenges_yet" = "No challenges yet";

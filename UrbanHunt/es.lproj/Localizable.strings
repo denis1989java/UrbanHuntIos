@@ -1,0 +1,88 @@
+/* Authentication */
+"sign_in_with_google" = "Iniciar sesión con Google";
+"welcome_urban_hunt" = "Descubre desafíos ocultos en tu ciudad";
+
+/* Profile */
+"profile" = "Perfil";
+"edit_profile" = "Editar Perfil";
+"name" = "Nombre";
+"enter_your_name" = "Ingrese su nombre";
+"social_media" = "Redes Sociales";
+"social_media_link" = "Enlace de redes sociales (opcional)";
+"instagram_or_tiktok_url" = "URL de Instagram o TikTok";
+"save" = "Guardar";
+"cancel" = "Cancelar";
+"settings" = "Configuración";
+"sign_out" = "Cerrar Sesión";
+
+/* Create Challenge */
+"create_challenge" = "Crear Desafío";
+"country" = "País";
+"city" = "Ciudad";
+"select_country" = "Seleccionar país";
+"select_city" = "Seleccionar ciudad";
+"challenge_name" = "Nombre del desafío";
+"enter_challenge_title" = "Ingrese el título del desafío";
+
+/* Hints */
+"hints" = "Pistas";
+"add_hint" = "Agregar pista";
+"no_hints_added" = "Aún no se han agregado pistas";
+"hint_text" = "Texto de la pista";
+"enter_hint" = "Ingrese la pista";
+"media_optional" = "Medios (opcional)";
+"select_photo_or_video" = "Seleccionar foto o video";
+"photo_selected" = "Foto seleccionada";
+"tap_to_change" = "Toca para cambiar";
+"publish_immediately" = "Publicar inmediatamente";
+"publish_date" = "Fecha de publicación";
+"select_date" = "Seleccionar Fecha";
+"select_date_and_time" = "Seleccione fecha y hora";
+"done" = "Hecho";
+"add" = "Agregar";
+"edit_hint" = "Editar Pista";
+"delete_hint" = "Eliminar Pista";
+"delete" = "Eliminar";
+
+/* Prize Photo */
+"prize_photo" = "Foto del Premio (opcional)";
+"select_prize_photo" = "Seleccionar foto del premio";
+
+/* Home */
+"home" = "Inicio";
+"challenges" = "Desafíos";
+/* Settings */
+"language" = "Idioma";
+"theme" = "Tema";
+"theme_system" = "Sistema";
+"theme_light" = "Claro";
+"theme_dark" = "Oscuro";
+"ok" = "OK";
+"failed_to_load_locales" = "Error al cargar idiomas";
+
+/* Errors */
+"inappropriate_content" = "Se detectó contenido inapropiado. Por favor elimine el lenguaje ofensivo.";
+
+/* Version Update */
+"update_required" = "Actualización Requerida";
+"please_update_app" = "Por favor actualice la aplicación desde el App Store para continuar";
+"latest_version" = "Última versión";
+"update_now" = "Actualizar Ahora";
+
+/* Filters */
+"all_countries" = "Todos los Países";
+"all_cities" = "Todas las Ciudades";
+"filter_by_country" = "Filtrar por País";
+"filter_by_city" = "Filtrar por Ciudad";
+
+/* Comments */
+"comments" = "Comentarios";
+"no_comments_yet" = "Aún no hay comentarios";
+"add_comment" = "Agregar comentario...";
+
+/* Status */
+"status_active" = "Activo";
+"status_completed" = "Completado";
+"status_archived" = "Archivado";
+"unknown_user" = "Desconocido";
+"no_challenges_yet" = "Aún no hay desafíos";
