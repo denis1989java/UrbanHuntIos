@@ -126,6 +126,7 @@ struct HintCard: View {
             Hint(content: "Look for the red door", link: nil, publishedAt: Date())
         ],
         completion: nil,
-        commentsCount: 0
+        commentsCount: 0,
+        nextHintDate: nil
     ))
 }

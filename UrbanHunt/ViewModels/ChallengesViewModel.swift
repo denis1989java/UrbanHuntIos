@@ -13,10 +13,13 @@ class ChallengesViewModel: ObservableObject {
     @Published var allChallenges: [Challenge] = []
     @Published var challenges: [Challenge] = []
     @Published var isLoading = false
+    @Published var isLoadingMore = false
     @Published var errorMessage: String?
+    @Published var hasMoreData = true
 
     @Published var selectedCountry: String?
     @Published var selectedCity: String?
+    @Published var selectedStatus: Challenge.ChallengeStatus?
 
     // Computed property for available countries
     var availableCountries: [String] {
@@ -40,9 +43,10 @@ class ChallengesViewModel: ObservableObject {
     func loadChallenges() async {
         isLoading = true
         errorMessage = nil
+        hasMoreData = true
 
         do {
-            allChallenges = try await APIService.shared.getChallenges()
+            allChallenges = try await APIService.shared.getChallenges(limit: 20)
             print("✅ Loaded \(allChallenges.count) challenges")
             applyFilters()
             isLoading = false
@@ -53,8 +57,78 @@ class ChallengesViewModel: ObservableObject {
         }
     }
 
+    func loadMoreChallenges() async {
+        guard !isLoadingMore && hasMoreData && !allChallenges.isEmpty else {
+            return
+        }
+
+        isLoadingMore = true
+
+        do {
+            let lastCreatedAt = allChallenges.last?.createdAt
+            let newChallenges = try await APIService.shared.getChallenges(limit: 20, lastCreatedAt: lastCreatedAt)
+            print("✅ Loaded \(newChallenges.count) more challenges")
+
+            if newChallenges.isEmpty {
+                hasMoreData = false
+            } else {
+                // Filter out duplicates
+                let existingIds = Set(allChallenges.map { $0.id })
+                let uniqueNewChallenges = newChallenges.filter { !existingIds.contains($0.id) }
+
+                print("🔍 Unique new challenges: \(uniqueNewChallenges.count) out of \(newChallenges.count)")
+
+                if uniqueNewChallenges.isEmpty {
+                    // All challenges were duplicates, stop loading
+                    hasMoreData = false
+                } else {
+                    allChallenges.append(contentsOf: uniqueNewChallenges)
+                    applyFilters()
+                }
+            }
+
+            isLoadingMore = false
+        } catch {
+            print("❌ Error loading more challenges: \(error)")
+            isLoadingMore = false
+        }
+    }
+
     func refreshChallenges() async {
+        allChallenges = []
         await loadChallenges()
+    }
+
+    func addNewChallenge(_ challenge: Challenge) {
+        // Insert at the beginning (top)
+        allChallenges.insert(challenge, at: 0)
+        applyFilters()
+        print("✅ Added new challenge to top: \(challenge.id)")
+    }
+
+    func updateCommentCount(for challengeId: String, newCount: Int) {
+        // Update in allChallenges
+        if let index = allChallenges.firstIndex(where: { $0.id == challengeId }) {
+            var updatedChallenge = allChallenges[index]
+            // Create a new challenge with updated count (since Challenge is a struct)
+            allChallenges[index] = Challenge(
+                id: updatedChallenge.id,
+                title: updatedChallenge.title,
+                status: updatedChallenge.status,
+                country: updatedChallenge.country,
+                cityName: updatedChallenge.cityName,
+                createdBy: updatedChallenge.createdBy,
+                creator: updatedChallenge.creator,
+                prizePhotoUrl: updatedChallenge.prizePhotoUrl,
+                createdAt: updatedChallenge.createdAt,
+                hints: updatedChallenge.hints,
+                completion: updatedChallenge.completion,
+                commentsCount: newCount,
+                nextHintDate: updatedChallenge.nextHintDate
+            )
+            applyFilters()
+            print("✅ Updated comment count for challenge \(challengeId): \(newCount)")
+        }
     }
 
     func filterByCountry(_ country: String?) async {
@@ -69,9 +143,15 @@ class ChallengesViewModel: ObservableObject {
         applyFilters()
     }
 
+    func filterByStatus(_ status: Challenge.ChallengeStatus?) async {
+        selectedStatus = status
+        applyFilters()
+    }
+
     func clearFilters() async {
         selectedCountry = nil
         selectedCity = nil
+        selectedStatus = nil
         applyFilters()
     }
 
@@ -86,7 +166,11 @@ class ChallengesViewModel: ObservableObject {
             filtered = filtered.filter { $0.cityName == city }
         }
 
+        if let status = selectedStatus {
+            filtered = filtered.filter { $0.status == status }
+        }
+
         challenges = filtered
-        print("🔍 Filtered to \(challenges.count) challenges (country: \(selectedCountry ?? "all"), city: \(selectedCity ?? "all"))")
+        print("🔍 Filtered to \(challenges.count) challenges (country: \(selectedCountry ?? "all"), city: \(selectedCity ?? "all"), status: \(selectedStatus?.rawValue ?? "all"))")
     }
 }

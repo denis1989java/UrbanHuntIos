@@ -11,6 +11,7 @@ struct SideMenuView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @Binding var isShowing: Bool
     @State private var showEditProfile = false
+    @State private var showMyChallenges = false
     @State private var showSettings = false
 
     var body: some View {
@@ -113,6 +114,34 @@ struct SideMenuView: View {
                             .padding(.leading, 24)
 
                         Button(action: {
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                isShowing = false
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                showMyChallenges = true
+                            }
+                        }) {
+                            HStack(spacing: 16) {
+                                Image(systemName: "map")
+                                    .font(.title3)
+                                    .foregroundColor(.primary)
+                                    .frame(width: 24)
+                                Text("my_challenges".localized)
+                                    .font(.body)
+                                    .foregroundColor(.primary)
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                            }
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 16)
+                        }
+
+                        Divider()
+                            .padding(.leading, 24)
+
+                        Button(action: {
                             // Settings action
                             withAnimation(.easeInOut(duration: 0.3)) {
                                 isShowing = false
@@ -171,6 +200,9 @@ struct SideMenuView: View {
         }
         .sheet(isPresented: $showEditProfile) {
             EditProfileView()
+        }
+        .sheet(isPresented: $showMyChallenges) {
+            MyChallengesView()
         }
         .sheet(isPresented: $showSettings) {
             SettingsView()

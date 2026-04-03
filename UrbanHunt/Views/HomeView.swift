@@ -14,10 +14,40 @@ struct HomeView: View {
     @State private var showSideMenu = false
     @State private var showCountryFilter = false
     @State private var showCityFilter = false
+    @State private var showStatusFilter = false
 
     var body: some View {
         LocalizedView {
             content
+        }
+    }
+
+    private var statusFilterText: String {
+        guard let status = viewModel.selectedStatus else {
+            return "all_statuses".localized
+        }
+        switch status {
+        case .draft:
+            return "draft".localized
+        case .active:
+            return "status_active".localized
+        case .completed:
+            return "status_completed".localized
+        case .archived:
+            return "status_archived".localized
+        }
+    }
+
+    private func statusText(_ status: Challenge.ChallengeStatus) -> String {
+        switch status {
+        case .draft:
+            return "draft".localized
+        case .active:
+            return "status_active".localized
+        case .completed:
+            return "status_completed".localized
+        case .archived:
+            return "status_archived".localized
         }
     }
 
@@ -41,6 +71,14 @@ struct HomeView: View {
 
                         Spacer()
 
+                        // App title
+                        Text("Urban Hunt")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.primary)
+
+                        Spacer()
+
                         // Add challenge button
                         Button(action: {
                             showCreateChallenge = true
@@ -54,6 +92,7 @@ struct HomeView: View {
                                         .foregroundColor(.primary)
                                 )
                         }
+                        .buttonStyle(PlainButtonStyle())
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 16)
@@ -62,57 +101,90 @@ struct HomeView: View {
                     Divider()
 
                     // Filters section
-                    HStack(spacing: 12) {
-                        // Country filter
-                        Button(action: {
-                            showCountryFilter = true
-                        }) {
-                            HStack(spacing: 6) {
-                                Image(systemName: "globe")
-                                    .font(.caption)
-                                Text(viewModel.selectedCountry ?? "all_countries".localized)
-                                    .font(.subheadline)
-                                Image(systemName: "chevron.down")
-                                    .font(.caption2)
-                            }
-                            .foregroundColor(.primary)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 8)
-                            .background(Color(uiColor: .secondarySystemBackground))
-                            .cornerRadius(8)
-                        }
-
-                        // City filter
-                        Button(action: {
-                            showCityFilter = true
-                        }) {
-                            HStack(spacing: 6) {
-                                Image(systemName: "building.2")
-                                    .font(.caption)
-                                Text(viewModel.selectedCity ?? "all_cities".localized)
-                                    .font(.subheadline)
-                                Image(systemName: "chevron.down")
-                                    .font(.caption2)
-                            }
-                            .foregroundColor(.primary)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 8)
-                            .background(Color(uiColor: .secondarySystemBackground))
-                            .cornerRadius(8)
-                        }
-                        .disabled(viewModel.selectedCountry == nil)
-
-                        Spacer()
-
-                        // Clear filters button
-                        if viewModel.selectedCountry != nil || viewModel.selectedCity != nil {
+                    VStack(spacing: 12) {
+                        FlowLayout(spacing: 12) {
+                            // Country filter
                             Button(action: {
-                                Task {
-                                    await viewModel.clearFilters()
-                                }
+                                showCountryFilter = true
                             }) {
-                                Image(systemName: "xmark.circle.fill")
-                                    .foregroundColor(.gray)
+                                HStack(spacing: 6) {
+                                    Image(systemName: "globe")
+                                        .font(.caption)
+                                    Text(viewModel.selectedCountry ?? "all_countries".localized)
+                                        .font(.subheadline)
+                                        .lineLimit(1)
+                                    Image(systemName: "chevron.down")
+                                        .font(.caption2)
+                                }
+                                .foregroundColor(.primary)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 8)
+                                .background(Color(uiColor: .secondarySystemBackground))
+                                .cornerRadius(8)
+                            }
+
+                            // City filter
+                            Button(action: {
+                                showCityFilter = true
+                            }) {
+                                HStack(spacing: 6) {
+                                    Image(systemName: "building.2")
+                                        .font(.caption)
+                                    Text(viewModel.selectedCity ?? "all_cities".localized)
+                                        .font(.subheadline)
+                                        .lineLimit(1)
+                                    Image(systemName: "chevron.down")
+                                        .font(.caption2)
+                                }
+                                .foregroundColor(.primary)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 8)
+                                .background(Color(uiColor: .secondarySystemBackground))
+                                .cornerRadius(8)
+                            }
+                            .disabled(viewModel.selectedCountry == nil)
+                            .opacity(viewModel.selectedCountry == nil ? 0.5 : 1.0)
+
+                            // Status filter
+                            Button(action: {
+                                showStatusFilter = true
+                            }) {
+                                HStack(spacing: 6) {
+                                    Image(systemName: "flag")
+                                        .font(.caption)
+                                    Text(statusFilterText)
+                                        .font(.subheadline)
+                                        .lineLimit(1)
+                                    Image(systemName: "chevron.down")
+                                        .font(.caption2)
+                                }
+                                .foregroundColor(.primary)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 8)
+                                .background(Color(uiColor: .secondarySystemBackground))
+                                .cornerRadius(8)
+                            }
+
+                            // Clear filters button
+                            if viewModel.selectedCountry != nil || viewModel.selectedCity != nil || viewModel.selectedStatus != nil {
+                                Button(action: {
+                                    Task {
+                                        await viewModel.clearFilters()
+                                    }
+                                }) {
+                                    HStack(spacing: 6) {
+                                        Image(systemName: "xmark.circle")
+                                            .font(.caption)
+                                        Text("clear".localized)
+                                            .font(.subheadline)
+                                            .lineLimit(1)
+                                    }
+                                    .foregroundColor(.red)
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 8)
+                                    .background(Color(uiColor: .secondarySystemBackground))
+                                    .cornerRadius(8)
+                                }
                             }
                         }
                     }
@@ -149,15 +221,29 @@ struct HomeView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     } else {
                         ScrollView {
-                            VStack(spacing: 16) {
+                            LazyVStack(spacing: 16) {
                                 ForEach(viewModel.challenges) { challenge in
-                                    ChallengeCard(challenge: challenge)
+                                    ChallengeCard(challenge: challenge, viewModel: viewModel)
                                         .environmentObject(authViewModel)
+                                        .onAppear {
+                                            // Load more when reaching last item
+                                            if challenge.id == viewModel.challenges.last?.id {
+                                                Task {
+                                                    await viewModel.loadMoreChallenges()
+                                                }
+                                            }
+                                        }
+                                }
+
+                                // Loading indicator at bottom
+                                if viewModel.isLoadingMore {
+                                    ProgressView()
+                                        .padding()
                                 }
                             }
                             .padding()
                         }
-                        .background(Color.white)
+                        .background(Color(uiColor: .systemBackground))
                         .refreshable {
                             await viewModel.refreshChallenges()
                         }
@@ -167,14 +253,12 @@ struct HomeView: View {
                 .task {
                     await viewModel.loadChallenges()
                 }
-                .sheet(isPresented: $showCreateChallenge, onDismiss: {
-                    // Refresh challenges after creating a new one
-                    Task {
-                        await viewModel.loadChallenges()
-                    }
-                }) {
-                    CreateChallengeView()
-                        .environmentObject(authViewModel)
+                .sheet(isPresented: $showCreateChallenge) {
+                    CreateChallengeView(onChallengeCreated: { newChallenge in
+                        // Add new challenge to the top of the list
+                        viewModel.addNewChallenge(newChallenge)
+                    })
+                    .environmentObject(authViewModel)
                 }
                 .sheet(isPresented: $showCountryFilter) {
                     CountryFilterSheet(
@@ -200,6 +284,17 @@ struct HomeView: View {
                         }
                     )
                 }
+                .sheet(isPresented: $showStatusFilter) {
+                    StatusFilterSheet(
+                        selectedStatus: viewModel.selectedStatus,
+                        onSelect: { status in
+                            showStatusFilter = false
+                            Task {
+                                await viewModel.filterByStatus(status)
+                            }
+                        }
+                    )
+                }
             }
             .disabled(showSideMenu)
 
@@ -210,9 +305,255 @@ struct HomeView: View {
     }
 }
 
+// FlowLayout for wrapping filters
+struct FlowLayout: Layout {
+    var spacing: CGFloat = 8
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let result = FlowResult(
+            in: proposal.replacingUnspecifiedDimensions().width,
+            subviews: subviews,
+            spacing: spacing
+        )
+        return result.size
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        let result = FlowResult(
+            in: bounds.width,
+            subviews: subviews,
+            spacing: spacing
+        )
+        for (index, subview) in subviews.enumerated() {
+            subview.place(at: CGPoint(x: bounds.minX + result.frames[index].minX,
+                                     y: bounds.minY + result.frames[index].minY),
+                         proposal: ProposedViewSize(result.frames[index].size))
+        }
+    }
+
+    struct FlowResult {
+        var frames: [CGRect] = []
+        var size: CGSize = .zero
+
+        init(in maxWidth: CGFloat, subviews: Subviews, spacing: CGFloat) {
+            var currentX: CGFloat = 0
+            var currentY: CGFloat = 0
+            var lineHeight: CGFloat = 0
+
+            for subview in subviews {
+                let size = subview.sizeThatFits(.unspecified)
+
+                if currentX + size.width > maxWidth && currentX > 0 {
+                    // Move to next line
+                    currentX = 0
+                    currentY += lineHeight + spacing
+                    lineHeight = 0
+                }
+
+                frames.append(CGRect(x: currentX, y: currentY, width: size.width, height: size.height))
+                lineHeight = max(lineHeight, size.height)
+                currentX += size.width + spacing
+            }
+
+            self.size = CGSize(
+                width: maxWidth,
+                height: currentY + lineHeight
+            )
+        }
+    }
+}
+
+// Country Filter Sheet
+struct CountryFilterSheet: View {
+    let countries: [String]
+    let selectedCountry: String?
+    let onSelect: (String?) -> Void
+    @Environment(\.dismiss) var dismiss
+
+    var body: some View {
+        NavigationView {
+            List {
+                // "All Countries" option
+                Button(action: {
+                    onSelect(nil)
+                    dismiss()
+                }) {
+                    HStack {
+                        Text("all_countries".localized)
+                            .foregroundColor(.primary)
+                        Spacer()
+                        if selectedCountry == nil {
+                            Image(systemName: "checkmark")
+                                .foregroundColor(.blue)
+                        }
+                    }
+                }
+
+                // Individual countries
+                ForEach(countries.sorted(), id: \.self) { country in
+                    Button(action: {
+                        onSelect(country)
+                        dismiss()
+                    }) {
+                        HStack {
+                            Text(country)
+                                .foregroundColor(.primary)
+                            Spacer()
+                            if selectedCountry == country {
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(.blue)
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("filter_by_country".localized)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: { dismiss() }) {
+                        Image(systemName: "xmark")
+                            .foregroundColor(.primary)
+                    }
+                }
+            }
+        }
+    }
+}
+
+// City Filter Sheet
+struct CityFilterSheet: View {
+    let cities: [String]
+    let selectedCity: String?
+    let onSelect: (String?) -> Void
+    @Environment(\.dismiss) var dismiss
+
+    var body: some View {
+        NavigationView {
+            List {
+                // "All Cities" option
+                Button(action: {
+                    onSelect(nil)
+                    dismiss()
+                }) {
+                    HStack {
+                        Text("all_cities".localized)
+                            .foregroundColor(.primary)
+                        Spacer()
+                        if selectedCity == nil {
+                            Image(systemName: "checkmark")
+                                .foregroundColor(.blue)
+                        }
+                    }
+                }
+
+                // Individual cities
+                ForEach(cities.sorted(), id: \.self) { city in
+                    Button(action: {
+                        onSelect(city)
+                        dismiss()
+                    }) {
+                        HStack {
+                            Text(city)
+                                .foregroundColor(.primary)
+                            Spacer()
+                            if selectedCity == city {
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(.blue)
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("filter_by_city".localized)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: { dismiss() }) {
+                        Image(systemName: "xmark")
+                            .foregroundColor(.primary)
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Status Filter Sheet
+struct StatusFilterSheet: View {
+    let selectedStatus: Challenge.ChallengeStatus?
+    let onSelect: (Challenge.ChallengeStatus?) -> Void
+    @Environment(\.dismiss) var dismiss
+
+    var body: some View {
+        NavigationView {
+            List {
+                // "All Statuses" option
+                Button(action: {
+                    onSelect(nil)
+                    dismiss()
+                }) {
+                    HStack {
+                        Text("all_statuses".localized)
+                            .foregroundColor(.primary)
+                        Spacer()
+                        if selectedStatus == nil {
+                            Image(systemName: "checkmark")
+                                .foregroundColor(.blue)
+                        }
+                    }
+                }
+
+                // Active
+                Button(action: {
+                    onSelect(.active)
+                    dismiss()
+                }) {
+                    HStack {
+                        Text("status_active".localized)
+                            .foregroundColor(.primary)
+                        Spacer()
+                        if selectedStatus == .active {
+                            Image(systemName: "checkmark")
+                                .foregroundColor(.blue)
+                        }
+                    }
+                }
+
+                // Completed
+                Button(action: {
+                    onSelect(.completed)
+                    dismiss()
+                }) {
+                    HStack {
+                        Text("status_completed".localized)
+                            .foregroundColor(.primary)
+                        Spacer()
+                        if selectedStatus == .completed {
+                            Image(systemName: "checkmark")
+                                .foregroundColor(.blue)
+                        }
+                    }
+                }
+            }
+            .navigationTitle("filter_by_status".localized)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: { dismiss() }) {
+                        Image(systemName: "xmark")
+                            .foregroundColor(.primary)
+                    }
+                }
+            }
+        }
+    }
+}
+
 // Challenge card with creator info
 struct ChallengeCard: View {
     let challenge: Challenge
+    let viewModel: ChallengesViewModel
     @EnvironmentObject var authViewModel: AuthViewModel
     @State private var showHints = false
     @State private var showComments = false
@@ -338,6 +679,26 @@ struct ChallengeCard: View {
                     .foregroundColor(.gray)
             }
 
+            // Next hint date (if available)
+            if let nextHintDate = challenge.nextHintDate, challenge.status != .completed {
+                HStack {
+                    HStack(spacing: 6) {
+                        Image(systemName: "clock")
+                            .font(.caption)
+                            .foregroundColor(.orange)
+                        Text("next_hint".localized)
+                            .font(.caption)
+                            .foregroundColor(.orange)
+                    }
+
+                    Spacer()
+
+                    Text(formatNextHintDate(nextHintDate))
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
+            }
+
             Divider()
 
             // Action buttons
@@ -394,8 +755,13 @@ struct ChallengeCard: View {
             HintsView(challenge: challenge)
         }
         .sheet(isPresented: $showComments) {
-            CommentsView(challengeId: challenge.id)
-                .environmentObject(authViewModel)
+            CommentsView(
+                challengeId: challenge.id,
+                onCommentCountChanged: { newCount in
+                    viewModel.updateCommentCount(for: challenge.id, newCount: newCount)
+                }
+            )
+            .environmentObject(authViewModel)
         }
         .sheet(isPresented: $showUserProfile) {
             if let createdBy = challenge.createdBy {
@@ -406,6 +772,8 @@ struct ChallengeCard: View {
 
     private var statusText: String {
         switch challenge.status {
+        case .draft:
+            return "draft".localized
         case .active:
             return "status_active".localized
         case .completed:
@@ -417,6 +785,8 @@ struct ChallengeCard: View {
 
     private var statusColor: Color {
         switch challenge.status {
+        case .draft:
+            return .orange
         case .active:
             return .green
         case .completed:
@@ -431,123 +801,15 @@ struct ChallengeCard: View {
         formatter.unitsStyle = .abbreviated
         return formatter.localizedString(for: challenge.createdAt, relativeTo: Date())
     }
-}
 
-// Country Filter Sheet
-struct CountryFilterSheet: View {
-    let countries: [String]
-    let selectedCountry: String?
-    let onSelect: (String?) -> Void
-    @Environment(\.dismiss) var dismiss
-
-    var body: some View {
-        NavigationView {
-            List {
-                // "All Countries" option
-                Button(action: {
-                    onSelect(nil)
-                    dismiss()
-                }) {
-                    HStack {
-                        Text("all_countries".localized)
-                            .foregroundColor(.primary)
-                        Spacer()
-                        if selectedCountry == nil {
-                            Image(systemName: "checkmark")
-                                .foregroundColor(.blue)
-                        }
-                    }
-                }
-
-                // Individual countries
-                ForEach(countries.sorted(), id: \.self) { country in
-                    Button(action: {
-                        onSelect(country)
-                        dismiss()
-                    }) {
-                        HStack {
-                            Text(country)
-                                .foregroundColor(.primary)
-                            Spacer()
-                            if selectedCountry == country {
-                                Image(systemName: "checkmark")
-                                    .foregroundColor(.blue)
-                            }
-                        }
-                    }
-                }
-            }
-            .navigationTitle("filter_by_country".localized)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { dismiss() }) {
-                        Image(systemName: "xmark")
-                            .foregroundColor(.primary)
-                    }
-                }
-            }
-        }
+    private func formatNextHintDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        return formatter.string(from: date)
     }
 }
 
-// City Filter Sheet
-struct CityFilterSheet: View {
-    let cities: [String]
-    let selectedCity: String?
-    let onSelect: (String?) -> Void
-    @Environment(\.dismiss) var dismiss
-
-    var body: some View {
-        NavigationView {
-            List {
-                // "All Cities" option
-                Button(action: {
-                    onSelect(nil)
-                    dismiss()
-                }) {
-                    HStack {
-                        Text("all_cities".localized)
-                            .foregroundColor(.primary)
-                        Spacer()
-                        if selectedCity == nil {
-                            Image(systemName: "checkmark")
-                                .foregroundColor(.blue)
-                        }
-                    }
-                }
-
-                // Individual cities
-                ForEach(cities.sorted(), id: \.self) { city in
-                    Button(action: {
-                        onSelect(city)
-                        dismiss()
-                    }) {
-                        HStack {
-                            Text(city)
-                                .foregroundColor(.primary)
-                            Spacer()
-                            if selectedCity == city {
-                                Image(systemName: "checkmark")
-                                    .foregroundColor(.blue)
-                            }
-                        }
-                    }
-                }
-            }
-            .navigationTitle("filter_by_city".localized)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { dismiss() }) {
-                        Image(systemName: "xmark")
-                            .foregroundColor(.primary)
-                    }
-                }
-            }
-        }
-    }
-}
 
 #Preview {
     HomeView()

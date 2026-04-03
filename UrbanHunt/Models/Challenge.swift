@@ -20,8 +20,10 @@ struct Challenge: Identifiable, Codable {
     let hints: [Hint]?
     let completion: Completion?
     let commentsCount: Int?
+    let nextHintDate: Date?
 
     enum ChallengeStatus: String, Codable {
+        case draft = "DRAFT"
         case active = "ACTIVE"
         case completed = "COMPLETED"
         case archived = "ARCHIVED"

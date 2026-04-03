@@ -75,6 +75,12 @@
 "all_cities" = "All Cities";
 "filter_by_country" = "Filter by Country";
 "filter_by_city" = "Filter by City";
+"all_statuses" = "All Statuses";
+"filter_by_status" = "Filter by Status";
+"filters" = "Filters";
+"clear_all" = "Clear All";
+"clear" = "Clear";
+"status" = "Status";
 
 /* Comments */
 "comments" = "Comments";
@@ -87,3 +93,25 @@
 "status_archived" = "Archived";
 "unknown_user" = "Unknown";
 "no_challenges_yet" = "No challenges yet";
+"next_hint" = "Next hint";
+
+/* My Challenges */
+"my_challenges" = "My Challenges";
+"create_first_challenge" = "Create your first challenge";
+"draft" = "Draft";
+"active" = "Active";
+"completed" = "Completed";
+"archived" = "Archived";
+
+/* Edit Challenge */
+"edit_challenge" = "Edit Challenge";
+"activate" = "Activate";
+"activate_challenge" = "Activate Challenge";
+"activate_challenge_message" = "Are you sure you want to activate this challenge? It will become visible to all users.";
+"delete_challenge" = "Delete Challenge";
+"delete_challenge_message" = "Are you sure you want to delete this challenge? It will be archived.";
+"location" = "Location";
+"save_changes" = "Save Changes";
+"unsaved_changes" = "Unsaved Changes";
+"save_changes_before_activate" = "You have unsaved changes. Please save them before activating.";
+"save_and_activate" = "Save & Activate";

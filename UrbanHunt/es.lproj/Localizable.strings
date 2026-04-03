@@ -75,6 +75,12 @@
 "all_cities" = "Todas las Ciudades";
 "filter_by_country" = "Filtrar por País";
 "filter_by_city" = "Filtrar por Ciudad";
+"all_statuses" = "Todos los Estados";
+"filter_by_status" = "Filtrar por Estado";
+"filters" = "Filtros";
+"clear_all" = "Borrar Todo";
+"clear" = "Borrar";
+"status" = "Estado";
 
 /* Comments */
 "comments" = "Comentarios";
@@ -87,3 +93,25 @@
 "status_archived" = "Archivado";
 "unknown_user" = "Desconocido";
 "no_challenges_yet" = "Aún no hay desafíos";
+"next_hint" = "Próxima pista";
+
+/* My Challenges */
+"my_challenges" = "Mis Desafíos";
+"create_first_challenge" = "Crea tu primer desafío";
+"draft" = "Borrador";
+"active" = "Activo";
+"completed" = "Completado";
+"archived" = "Archivado";
+
+/* Edit Challenge */
+"edit_challenge" = "Editar Desafío";
+"activate" = "Activar";
+"activate_challenge" = "Activar Desafío";
+"activate_challenge_message" = "¿Estás seguro de que quieres activar este desafío? Será visible para todos los usuarios.";
+"delete_challenge" = "Eliminar Desafío";
+"delete_challenge_message" = "¿Estás seguro de que quieres eliminar este desafío? Será archivado.";
+"location" = "Ubicación";
+"save_changes" = "Guardar Cambios";
+"unsaved_changes" = "Cambios No Guardados";
+"save_changes_before_activate" = "Tienes cambios no guardados. Por favor guárdalos antes de activar.";
+"save_and_activate" = "Guardar y Activar";

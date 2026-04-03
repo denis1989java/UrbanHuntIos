@@ -9,10 +9,14 @@ import SwiftUI
 
 struct CommentsView: View {
     let challengeId: String
+    let onCommentCountChanged: ((Int) -> Void)?
+
     @EnvironmentObject var authViewModel: AuthViewModel
     @Environment(\.dismiss) var dismiss
     @State private var comments: [Comment] = []
     @State private var isLoading = false
+    @State private var isLoadingMore = false
+    @State private var hasMoreData = true
     @State private var newCommentText = ""
     @State private var errorMessage: String?
 
@@ -44,9 +48,21 @@ struct CommentsView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
                     ScrollView {
-                        VStack(spacing: 12) {
+                        LazyVStack(spacing: 12) {
                             ForEach(comments) { comment in
                                 CommentCard(comment: comment)
+                                    .onAppear {
+                                        // Load more when reaching last item
+                                        if comment.id == comments.last?.id {
+                                            loadMoreComments()
+                                        }
+                                    }
+                            }
+
+                            // Loading indicator at bottom
+                            if isLoadingMore {
+                                ProgressView()
+                                    .padding()
                             }
                         }
                         .padding()
@@ -93,10 +109,11 @@ struct CommentsView: View {
     private func loadComments() {
         isLoading = true
         errorMessage = nil
+        hasMoreData = true
 
         Task {
             do {
-                comments = try await APIService.shared.getComments(challengeId: challengeId)
+                comments = try await APIService.shared.getComments(challengeId: challengeId, limit: 20)
                 print("✅ Loaded \(comments.count) comments")
                 await MainActor.run {
                     isLoading = false
@@ -106,6 +123,40 @@ struct CommentsView: View {
                 await MainActor.run {
                     errorMessage = "Failed to load comments"
                     isLoading = false
+                }
+            }
+        }
+    }
+
+    private func loadMoreComments() {
+        guard !isLoadingMore && hasMoreData && !comments.isEmpty else {
+            return
+        }
+
+        isLoadingMore = true
+
+        Task {
+            do {
+                let startAfter = comments.last?.id
+                let newComments = try await APIService.shared.getComments(
+                    challengeId: challengeId,
+                    limit: 20,
+                    startAfter: startAfter
+                )
+                print("✅ Loaded \(newComments.count) more comments")
+
+                await MainActor.run {
+                    if newComments.isEmpty {
+                        hasMoreData = false
+                    } else {
+                        comments.append(contentsOf: newComments)
+                    }
+                    isLoadingMore = false
+                }
+            } catch {
+                print("❌ Error loading more comments: \(error)")
+                await MainActor.run {
+                    isLoadingMore = false
                 }
             }
         }
@@ -128,8 +179,11 @@ struct CommentsView: View {
 
                 await MainActor.run {
                     newCommentText = ""
+                    // Insert new comment at the beginning
+                    comments.insert(comment, at: 0)
+                    // Notify parent about new comment count
+                    onCommentCountChanged?(comments.count)
                     isLoading = false
-                    loadComments() // Reload comments
                 }
             } catch {
                 print("❌ Error creating comment: \(error)")
@@ -145,6 +199,7 @@ struct CommentsView: View {
 struct CommentCard: View {
     let comment: Comment
     @State private var authorPictureUrl: String?
+    @State private var isLoadingAuthor = false
     @State private var showUserProfile = false
 
     var body: some View {
@@ -211,14 +266,25 @@ struct CommentCard: View {
     }
 
     private func loadAuthorInfo() {
+        // Don't load if already loading or already loaded
+        guard !isLoadingAuthor && authorPictureUrl == nil else {
+            return
+        }
+
+        isLoadingAuthor = true
+
         Task {
             do {
                 let userSummary = try await APIService.shared.getUserById(userId: comment.authorId)
                 await MainActor.run {
                     authorPictureUrl = userSummary.pictureUrl
+                    isLoadingAuthor = false
                 }
             } catch {
                 print("❌ Error loading author info: \(error)")
+                await MainActor.run {
+                    isLoadingAuthor = false
+                }
             }
         }
     }
@@ -231,5 +297,5 @@ struct CommentCard: View {
 }
 
 #Preview {
-    CommentsView(challengeId: "123")
+    CommentsView(challengeId: "123", onCommentCountChanged: nil)
 }

@@ -157,7 +157,7 @@ class APIService {
         return try decoder.decode([AppLocale].self, from: data)
     }
 
-    func createChallenge(title: String, description: String, country: String, cityName: String, prizePhotoUrl: String? = nil) async throws -> Challenge {
+    func createChallenge(title: String, country: String, cityName: String, prizePhotoUrl: String? = nil) async throws -> Challenge {
         print("🔄 APIService.createChallenge called")
 
         guard let token = try await getFirebaseToken() else {
@@ -173,7 +173,6 @@ class APIService {
 
         var body: [String: Any] = [
             "title": title,
-            "description": description,
             "country": country,
             "cityName": cityName
         ]
@@ -279,7 +278,7 @@ class APIService {
         return try JSONDecoder.apiDecoder.decode(Challenge.self, from: data)
     }
 
-    func getChallenges() async throws -> [Challenge] {
+    func getChallenges(limit: Int = 20, lastCreatedAt: Date? = nil) async throws -> [Challenge] {
         print("🔄 APIService.getChallenges called")
 
         guard let token = try await getFirebaseToken() else {
@@ -287,7 +286,22 @@ class APIService {
             throw APIError.noToken
         }
 
-        let url = URL(string: "\(baseURL)/challenges")!
+        var urlComponents = URLComponents(string: "\(baseURL)/challenges")!
+        var queryItems: [URLQueryItem] = [
+            URLQueryItem(name: "limit", value: "\(limit)")
+        ]
+
+        if let lastCreatedAt = lastCreatedAt {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+            dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+            let dateString = dateFormatter.string(from: lastCreatedAt)
+            queryItems.append(URLQueryItem(name: "lastCreatedAt", value: dateString))
+        }
+
+        urlComponents.queryItems = queryItems
+
+        let url = urlComponents.url!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
@@ -312,6 +326,146 @@ class APIService {
         }
 
         return try JSONDecoder.apiDecoder.decode([Challenge].self, from: data)
+    }
+
+    func getMyChallenges(limit: Int = 20, lastCreatedAt: Date? = nil) async throws -> [Challenge] {
+        print("🔄 APIService.getMyChallenges called")
+
+        guard let token = try await getFirebaseToken() else {
+            print("❌ No Firebase token")
+            throw APIError.noToken
+        }
+
+        var urlComponents = URLComponents(string: "\(baseURL)/challenges/my")!
+        var queryItems: [URLQueryItem] = [
+            URLQueryItem(name: "limit", value: "\(limit)")
+        ]
+
+        if let lastCreatedAt = lastCreatedAt {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+            dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+            let dateString = dateFormatter.string(from: lastCreatedAt)
+            queryItems.append(URLQueryItem(name: "lastCreatedAt", value: dateString))
+        }
+
+        urlComponents.queryItems = queryItems
+
+        let url = urlComponents.url!
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+        print("🌐 Making request to: \(url)")
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            print("❌ Invalid response type")
+            throw APIError.invalidResponse
+        }
+
+        print("📥 Response status: \(httpResponse.statusCode)")
+
+        if let responseString = String(data: data, encoding: .utf8) {
+            print("📥 Response body preview: \(responseString.prefix(200))...")
+        }
+
+        guard httpResponse.statusCode == 200 else {
+            print("❌ Bad status code: \(httpResponse.statusCode)")
+            throw APIError.invalidResponse
+        }
+
+        return try JSONDecoder.apiDecoder.decode([Challenge].self, from: data)
+    }
+
+    func updateChallengeStatus(challengeId: String, status: Challenge.ChallengeStatus) async throws -> Challenge {
+        print("🔄 APIService.updateChallengeStatus called")
+
+        guard let token = try await getFirebaseToken() else {
+            print("❌ No Firebase token")
+            throw APIError.noToken
+        }
+
+        let url = URL(string: "\(baseURL)/challenges/\(challengeId)/status?status=\(status.rawValue)")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "PATCH"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+        print("🌐 Making request to: \(url)")
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            print("❌ Invalid response type")
+            throw APIError.invalidResponse
+        }
+
+        print("📥 Response status: \(httpResponse.statusCode)")
+
+        guard httpResponse.statusCode == 200 else {
+            print("❌ Bad status code: \(httpResponse.statusCode)")
+            throw APIError.invalidResponse
+        }
+
+        return try JSONDecoder.apiDecoder.decode(Challenge.self, from: data)
+    }
+
+    func updateChallenge(challengeId: String, title: String, country: String, cityName: String, prizePhotoUrl: String?) async throws -> Challenge {
+        print("🔄 APIService.updateChallenge called")
+
+        guard let token = try await getFirebaseToken() else {
+            print("❌ No Firebase token")
+            throw APIError.noToken
+        }
+
+        let url = URL(string: "\(baseURL)/challenges/\(challengeId)")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        var body: [String: Any] = [
+            "title": title,
+            "country": country,
+            "cityName": cityName
+        ]
+
+        if let prizePhotoUrl = prizePhotoUrl {
+            body["prizePhotoUrl"] = prizePhotoUrl
+        }
+
+        request.httpBody = try JSONSerialization.data(withJSONObject: body)
+
+        if let bodyString = String(data: request.httpBody!, encoding: .utf8) {
+            print("📤 Request body: \(bodyString)")
+        }
+
+        print("🌐 Making request to: \(url)")
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            print("❌ Invalid response type")
+            throw APIError.invalidResponse
+        }
+
+        print("📥 Response status: \(httpResponse.statusCode)")
+
+        if let responseString = String(data: data, encoding: .utf8) {
+            print("📥 Response body: \(responseString)")
+        }
+
+        guard httpResponse.statusCode == 200 else {
+            print("❌ Bad status code: \(httpResponse.statusCode)")
+
+            // Try to parse error message from server
+            if let json = try? JSONSerialization.jsonObject(with: data) as? [String: String],
+               let errorMessage = json["error"] {
+                throw APIError.serverError(errorMessage)
+            }
+
+            throw APIError.invalidResponse
+        }
+
+        return try JSONDecoder.apiDecoder.decode(Challenge.self, from: data)
     }
 
     func checkVersion() async throws -> VersionCheckResponse {
@@ -356,7 +510,7 @@ class APIService {
         return try JSONDecoder().decode(VersionCheckResponse.self, from: data)
     }
 
-    func getComments(challengeId: String) async throws -> [Comment] {
+    func getComments(challengeId: String, limit: Int = 20, startAfter: String? = nil) async throws -> [Comment] {
         print("🔄 APIService.getComments called")
 
         guard let token = try await getFirebaseToken() else {
@@ -364,7 +518,18 @@ class APIService {
             throw APIError.noToken
         }
 
-        let url = URL(string: "\(baseURL)/challenges/\(challengeId)/comments")!
+        var urlComponents = URLComponents(string: "\(baseURL)/challenges/\(challengeId)/comments")!
+        var queryItems: [URLQueryItem] = [
+            URLQueryItem(name: "limit", value: "\(limit)")
+        ]
+
+        if let startAfter = startAfter {
+            queryItems.append(URLQueryItem(name: "startAfter", value: startAfter))
+        }
+
+        urlComponents.queryItems = queryItems
+
+        let url = urlComponents.url!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")

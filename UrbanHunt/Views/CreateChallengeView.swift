@@ -19,6 +19,8 @@ struct CreateChallengeView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @Environment(\.dismiss) var dismiss
 
+    let onChallengeCreated: ((Challenge) -> Void)?
+
     @State private var title: String = ""
     @State private var country: String = ""
     @State private var cityName: String = ""
@@ -405,7 +407,6 @@ struct CreateChallengeView: View {
                 // Create challenge with prize photo URL
                 let challenge = try await APIService.shared.createChallenge(
                     title: title.trimmingCharacters(in: .whitespaces),
-                    description: "",
                     country: country.trimmingCharacters(in: .whitespaces),
                     cityName: cityName.trimmingCharacters(in: .whitespaces),
                     prizePhotoUrl: prizePhotoUrl
@@ -440,6 +441,8 @@ struct CreateChallengeView: View {
 
                 await MainActor.run {
                     isLoading = false
+                    // Notify parent with the new challenge
+                    onChallengeCreated?(challenge)
                     dismiss()
                 }
             } catch let apiError as APIError {
@@ -478,7 +481,7 @@ struct CreateChallengeView: View {
 }
 
 #Preview {
-    CreateChallengeView()
+    CreateChallengeView(onChallengeCreated: nil)
 }
 
 // MARK: - Country Picker Sheet
